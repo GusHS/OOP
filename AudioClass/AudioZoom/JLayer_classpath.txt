@@ -1,0 +1,7 @@
+
+set PATH=C:\JLayer1.0.1
+
+set CLASSPATH=C:\JLayer1.0.1\jl1.0.1.jar;.;%CLASSPATH%
+set CLASSPATH=C:/JLayer1.0.1/jl1.0.1.jar;.;%CLASSPATH%
+
+export CLASSPATH=/JLayer1.0.1/jl1.0.1.jar:$CLASSPATH
