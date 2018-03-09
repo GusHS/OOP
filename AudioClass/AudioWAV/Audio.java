@@ -19,7 +19,7 @@ public class Audio
         
         
         // 2. Abrir el archivo .wav de la cancion usando File
-        songFile = new File(song)
+        songFile = new File(song);
         
         // 3. Preparar el Audio Stream relacionado con la cancion
         audioIn = AudioSystem.getAudioInputStream(songFile);

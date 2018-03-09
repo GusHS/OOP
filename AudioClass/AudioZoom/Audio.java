@@ -18,10 +18,10 @@ public class Audio
     {
         // 1. Especificar el nombre de la cancion a reproducir
         //song = "SOS.mp3";
-        song = "Lines On My Face.mp3";
+        song = "Take On Me";
         
         // 2. Abrir el archivo .mp3 de la cancion usando File
-        songFile = new File("/JesusGG/Music_JGG/music_mp3/"+song);
+        songFile = new File(song);
         
         // 3. Preparar el Audio Stream relacionado con la cancion
         fileInputStream = new FileInputStream(songFile);
