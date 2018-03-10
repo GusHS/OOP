@@ -17,9 +17,9 @@ public class AudioGUI extends JFrame implements ActionListener
     private JTextField tfSong;
     private JButton    bPlay, bStop;
     private JPanel     panel1, panel2;
-    private JLabel     lbSong;
-    private  AudioOS   audioOS; 
-      
+    private JLabel     lbSong; 
+    private AudioOS    audioPlayer;
+
     public AudioGUI()
     {
         super("Audio Reproductor MP3");
@@ -62,16 +62,22 @@ public class AudioGUI extends JFrame implements ActionListener
     public void actionPerformed(ActionEvent e)
     {
         String song, respuesta;
-        
+
         if(e.getSource() == bPlay)
         {
             song = tfSong.getText();
-            audioOS.reproducir(song);
+            audioPlayer = new AudioOS(song);
+            try {
+                lbSong.setText("Now Playing: "+song);
+                audioPlayer.reproducir();   
+            } 
+            catch (Exception ex) {
+                System.out.println("Exception" + ex);
+            }
         }
-        
         if(e.getSource() == bStop)
         {
-        	audioOS.stop();
+        	audioPlayer.stop();
         }
     }
     
