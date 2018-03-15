@@ -10,6 +10,8 @@ public class AudioTunesGUI2 extends JFrame implements ActionListener{
     private JButton     bPlay, bStop;
     private JPanel      panelUsuario, panelArtistas, panelAlbums;
     private JPanel      panelSongs, panelAudio, panelPrincipal;
+    private AudioOSWAV  audioOSWAV;
+    private AudioTunesAD audioTunesAD;
     
     public AudioTunesGUI2(){
         super("Audio Tunes");
@@ -18,9 +20,9 @@ public class AudioTunesGUI2 extends JFrame implements ActionListener{
         tfArtista   = new JTextField(10);
         tfAlbum     = new JTextField(10);
         tfSong      = new JTextField(10);
-        taArtistas = new JTextArea("Artistas");
+        taArtistas = new JTextArea("Artistas",20,20);
         taAlbums   = new JTextArea("Albums");
-        taSongs    = new JTextArea("Songs");
+        taSongs    = new JTextArea("Songs",20,20);
         bCatalogo = new JButton("Catalogo");
         bArtista  = new JButton("Artista");
         bAlbums   = new JButton("Albums");
@@ -33,9 +35,15 @@ public class AudioTunesGUI2 extends JFrame implements ActionListener{
         panelSongs     = new JPanel();
         panelAudio     = new JPanel();
         panelPrincipal = new JPanel();
+        audioTunesAD = new AudioTunesAD();
+        audioOSWAV   = new AudioOSWAV();
 
+        //Adicionar actionListener a los JButtons.
         bPlay.addActionListener(this);
         bStop.addActionListener(this);
+        bCatalogo.addActionListener(this);
+        bAlbums.addActionListener(this);
+        bSongs.addActionListener(this);
         
         //2. Definir Layouts de los JPanels.
         panelUsuario.setLayout(new FlowLayout());
@@ -77,8 +85,43 @@ public class AudioTunesGUI2 extends JFrame implements ActionListener{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    public void ActionPerformed(ActionEvent e) {
-      
+    public void actionPerformed(ActionEvent e) {
+        String song, respuesta, artistas, artista, albums, songs, album;
+      if (e.getSource() == bAlbums) {
+        // 1. Leer el Artista
+        artista = tfArtista.getText();
+        // 2. Obtener los albums
+        albums = audioTunesAD.getAlbums(artista);
+        // 3. Desplegar los albums en el panel correspondiente.
+        taAlbums.setText(albums);
+      }
+      if(e.getSource() == bCatalogo){
+          //1.Obtener los artistas del archivo
+          artistas = audioTunesAD.getArtistas();
+          
+          //2. SetText
+          taArtistas.setText(artistas);
+      }
+      if (e.getSource() == bSongs) {
+          album = tfAlbum.getText();
+          songs = audioTunesAD.getSongs(album);
+          taSongs.setText(songs);
+      }
+
+
+      if (e.getSource()== bPlay) {
+          try {
+            song = tfSong.getText();
+            audioOSWAV.reproducir(song);     
+          } 
+          catch (Exception ex) {
+              System.out.println("Error" + ex);
+          }
+      }
+      if (e.getSource()==bStop) {
+          audioOSWAV.stop();
+      }
+    
     }
     public static void main(String[] args) {
         new AudioTunesGUI2();

@@ -17,9 +17,9 @@ public class AudioTunesGUI extends JFrame {
         tfArtista   = new JTextField(10);
         tfAlbum     = new JTextField(10);
         tfSong      = new JTextField(10);
-        taArtistas = new JTextArea("Artistas");
+        taArtistas = new JTextArea("Artistas",20,20);
         taAlbums   = new JTextArea("Albums");
-        taSongs    = new JTextArea("Songs");
+        taSongs    = new JTextArea("Songs",20,20);
         bCatalogo = new JButton("Catalogo");
         bArtista  = new JButton("Artista");
         bAlbums   = new JButton("Albums");
