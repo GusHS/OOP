@@ -12,15 +12,17 @@ public class Proyecto extends JFrame implements ActionListener{
     private JMenuBar        mbPrincipal;
     private JMenu           menuOpciones, menuCalculos, menuGrados, menuAudio;
     private JMenuItem       miGradosCF, miGradosFC, miExponencial, miFactorial;
-    private JMenuItem       miAudioWAV, miAudioFX; 
+    private JMenuItem       miAudioWAV, miAudioFX, miAudioZoom; 
     private JMenuItem       miEcuacion, miSalir;
     private JPanel          panel;
     private FactorialGUI2   factorial;
     private Exponencial     exponencial;
     private GradosGUI4      grados;
     private EcuacionGUI     ecuacion;
-    private Audio4          audioWAV;
     private CalculosDP      calculos;
+    private AudioWAVGUI     audioWAV;
+    private AudioFXGUI      audioFX;
+    private AudioZoomGUI    audioZoom;
 
 
     public Proyecto() throws Exception{
@@ -35,6 +37,8 @@ public class Proyecto extends JFrame implements ActionListener{
         miExponencial   = new JMenuItem("Exponencial");
         miFactorial     = new JMenuItem("Factorial");
         miAudioWAV      = new JMenuItem("Audio WAV");
+        miAudioFX       = new JMenuItem("Audio FX");
+        miAudioZoom     = new JMenuItem("Audio Zoom");
         miEcuacion      = new JMenuItem("Ecuacion");
         miSalir         = new JMenuItem("Salir");
         panel           = new JPanel();
@@ -42,8 +46,11 @@ public class Proyecto extends JFrame implements ActionListener{
         exponencial     = new Exponencial();
         grados          = new GradosGUI4();
         ecuacion        = new EcuacionGUI();
-        audio           = new Audio4();
         calculos        = new CalculosDP();
+        audioWAV        = new AudioWAVGUI();
+        audioFX         = new AudioFXGUI();
+        audioZoom       = new AudioZoomGUI();
+       
 
         miGradosCF.addActionListener(this);
         miGradosFC.addActionListener(this);
@@ -52,6 +59,8 @@ public class Proyecto extends JFrame implements ActionListener{
         miEcuacion.addActionListener(this);
         miAudioWAV.addActionListener(this);
         miSalir.addActionListener(this);
+        miAudioFX.addActionListener(this);
+        miAudioZoom.addActionListener(this);
         
         menuGrados.add(miGradosCF);
         menuGrados.add(miGradosFC);
@@ -61,6 +70,8 @@ public class Proyecto extends JFrame implements ActionListener{
         menuCalculos.add(menuGrados);
         menuOpciones.add(menuCalculos);
         menuAudio.add(miAudioWAV);
+        menuAudio.add(miAudioFX);
+        menuAudio.add(miAudioZoom);
         menuOpciones.add(miSalir);
         mbPrincipal.add(menuOpciones);
         mbPrincipal.add(menuAudio);
@@ -101,13 +112,18 @@ public class Proyecto extends JFrame implements ActionListener{
             panel.setVisible(true);
             add(panel);
         }
-        if (e.getSource() == miAudioWAV) {
+        if (e.getSource() == miAudioFX) {
             panel.setVisible(false);
-            panel = miAudioFX.getPanel2();
+            panel = audioFX.getPanel2();
             panel.setVisible(true);
+            add(panel);
         }
-
-
+        if (e.getSource() == miAudioZoom) {
+            panel.setVisible(false);
+            panel = audioZoom.getPanel2();
+            panel.setVisible(true);
+            add(panel);
+        }
         if(e.getSource() == miSalir){
             System.exit(0);
         }

@@ -42,8 +42,6 @@ public class EcuacionGUI extends JFrame implements ActionListener{
         panel1.add(bSalir);
         panel2.add(panel1);
         panel2.add(taDatos);
-        setVisible(true);
-        setSize(300, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     public JPanel getPanel2(){

@@ -22,7 +22,7 @@ public class AudioFXGUI extends JFrame implements ActionListener
 
     public AudioFXGUI()
     {
-        super("Audio Reproductor MP3");
+        super("Audio Reproductor MP3 FX");
         
         // 1. Crear los objetos de los atributos
         tfSong = new JTextField();
@@ -41,7 +41,7 @@ public class AudioFXGUI extends JFrame implements ActionListener
         panel2.setLayout(new FlowLayout());
         
         // 3. Adicionar los objetos a los JPanels correspondientes
-        panel1.add(new JLabel("Cancion a reproducir: "));
+        panel1.add(new JLabel("Cancion MP3 a reproducir: "));
         panel1.add(tfSong);
         panel1.add(bPlay);
         panel1.add(bStop);
@@ -50,10 +50,7 @@ public class AudioFXGUI extends JFrame implements ActionListener
         panel2.add(lbSong);
         
         
-        // 4. Adicionar panel3 al JFrame y hacerlo visible
-        add(panel2);
-        setSize(350,250);
-        
+        // 4. Adicionar panel3 al JFrame y hacerlo visible        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
@@ -79,13 +76,8 @@ public class AudioFXGUI extends JFrame implements ActionListener
         	audioPlayer.stop();
         }
     }
-    
+
     public JPanel getPanel2(){
         return panel2;
-    }
-
-    public static void main(String args[])
-    {
-        new AudioFXGUI();
     }
 }
