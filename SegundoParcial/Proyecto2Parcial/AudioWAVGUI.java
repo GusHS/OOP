@@ -79,8 +79,6 @@ public class AudioWAVGUI extends JFrame implements ActionListener
         
         if(e.getSource() == bStop)
         {
-            song = tfSong.getText();
-            audioWAVOS = new AudioWAVOS(song);
             audioWAVOS.stop();
         }
     }

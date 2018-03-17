@@ -17,7 +17,7 @@ public class AudioWAVOS {
     {
         // 1. Especificar el nombre de la cancion a reproducir        
         // 2. Abrir el archivo .wav de la cancion usando File
-        songFile = new File(song);
+        songFile = new File(song+".wav");
         
         // 3. Preparar el Audio Stream relacionado con la cancion
         audioIn = AudioSystem.getAudioInputStream(songFile);
