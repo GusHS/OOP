@@ -14,7 +14,6 @@ public class AudioTunesADVL
 		String artistas="", str;
 		try
 		{
-		
 			//1.Abrir el archivo de datos
 			archivoIn = new BufferedReader(new FileReader("Artistas.txt"));
 			
@@ -99,7 +98,6 @@ public class AudioTunesADVL
 					vectorSongs.add(song);
 				}
 			}
-			
 			//3.Cerrar archivo
 			archivoIn.close();
 		}

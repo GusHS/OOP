@@ -2,12 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-
-import java.util.StringTokenizer;
 import java.util.Vector;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
@@ -18,8 +12,6 @@ public class AudioTunesGUIVL extends JFrame implements ActionListener, ListSelec
 	String song, respuesta;
 	private JLabel lbSong;
 	private File songFile;
-    private AudioInputStream audioIn;
-    private Clip clip;
 	private JButton bCatalogo, bArtista, bAlbums, bSongs;
 	private JButton bPlay, bStop;
 	private JTextField tfArtista, tfAlbum, tfSong;
@@ -28,7 +20,8 @@ public class AudioTunesGUIVL extends JFrame implements ActionListener, ListSelec
 	private Vector vectorArtistas, vectorAlbums, vectorSongs;
 	private JList listaArtistas, listaAlbums, listaSongs;
 	private AudioWAVOS audioWAVOS;
-	private AudioFXOS audioFXOS;
+	private AudioFXOS audioPlayer;
+	private Boolean wavChosen = false;
 	
 	public AudioTunesGUIVL()
 	{
@@ -44,7 +37,7 @@ public class AudioTunesGUIVL extends JFrame implements ActionListener, ListSelec
 		bPlay   = new JButton("Play");
 		bStop   = new JButton("Stop");
 		taArtistas   = new JTextArea("Artistas",20, 20);
-		taAlbums   = new JTextArea("Albums",20, 20);
+		taAlbums   = new JTextArea("Albums",20, 10);
 		taSongs   = new JTextArea("Songs",20, 20);
 		panelUsuario = new JPanel();
 		panelArtistas = new JPanel();
@@ -103,19 +96,6 @@ public class AudioTunesGUIVL extends JFrame implements ActionListener, ListSelec
 	public void actionPerformed(ActionEvent e)
 	{
 		String artistas, artista, albums, albumes, songs;
-		if(e.getSource() == bPlay)
-        {
-            song = tfSong.getText();
-            
-            respuesta = reproducir(song);
-            
-            lbSong.setText(respuesta);
-        }
-        
-        if(e.getSource() == bStop)
-        {
-            clip.stop();
-        }
 		if (e.getSource()==bCatalogo)
 		{
 			//1.- Obtener los artistas del archivo
@@ -163,72 +143,74 @@ public class AudioTunesGUIVL extends JFrame implements ActionListener, ListSelec
 			panelSongs.setVisible(true);
 		}
 		if (e.getSource()==bPlay){
-			StringTokenizer st;
-			String song, songName, termination;
+			String song,termination,songName;
+			String wavTerm="wav";
+			String mp3Term="mp3";
+			
 			song = tfSong.getText();
-			st = new StringTokenizer(song,".");
-			songName = st.nextToken();
-			termination = st.nextToken();
-			if(termination==".wav"){
-				audioWAVOS= new AudioWAVOS(songName);
-				audioWAVOS.reproducir();
+			String[]parts = song.split("\\.");
+			songName = parts[0];
+			termination = parts[1];
+			System.out.println(termination);
+			if(termination.equals(wavTerm)){
+				wavChosen = true;
+				try {
+					audioWAVOS = new AudioWAVOS(songName);
+                	audioWAVOS.reproducir();
+                	lbSong.setText(songName +".wav");
+				} catch (Exception ex) {
+					System.out.println("Exception: "+ex);
+				}
 			}
-			if (termination == ".mp3") {
-				audioFXOS = new AudioFXOS(songName);
-				audioFXOS.reproducir();
+			if (termination.equals(mp3Term)) {
+				wavChosen = false;
+            	try {
+					audioPlayer = new AudioFXOS(songName);
+                	audioPlayer.reproducir();   
+            	} 
+            	catch (Exception ex) {
+                	System.out.println("Exception" + ex);
+            	}
 			}
 		}
 
 		if(e.getSource()==bStop){
-			audioFXOS.stop();
-			audioWAVOS.stop();
+			if(wavChosen == true){
+				audioWAVOS.stop();
+			}
+			if(wavChosen == false){
+				audioPlayer.stop();
+			}
 		}
 
 	}
-	public String reproducir(String song) //throws Exception
-    {
-        String respuesta="";
-        
-        try
-        {
-            // 1. Especificar el nobre de la cancion a reproducir
-            //song = new File("Lazarus.wav");
-            songFile = new File(song+".wav");
-            
-            // 2. Preparar los streams de audio
-            audioIn = AudioSystem.getAudioInputStream(songFile);
-            
-            // 3. Preparar el AudioStream (audioIn) y reproducirlo
-            clip = AudioSystem.getClip();
-            clip.open(audioIn);
-            clip.start();
-            
-            respuesta = "Now Playing: "+song;
-        }
-        catch(Exception e)
-        {
-            respuesta = "Now Playing: Error NO SONG";
-            System.out.println("Error: "+e);
-        }
-        
-        return respuesta;
-    }
+	
     public void valueChanged(ListSelectionEvent lse)
     {
-    	String artistaElegido, albumElegido, songElegido;
+		String artistaElegido, albumElegido, songElegido;
     	if(lse.getValueIsAdjusting()==true)
 		{
 	    	if(lse.getSource()==listaArtistas)
 	    	{
 	    		artistaElegido = (String)listaArtistas.getSelectedValue();
-	    		tfArtista.setText(artistaElegido);
-	    		System.out.println(artistaElegido);
+				vectorAlbums = audiotunesad.obtenerAlbums(artistaElegido);
+				listaAlbums = new JList(vectorAlbums);
+				listaAlbums.addListSelectionListener(this);
+				panelAlbums.setVisible(false);
+				panelAlbums.removeAll();
+				panelAlbums.add(listaAlbums);
+				panelAlbums.setVisible(true);
 	    	}
 	    	if(lse.getSource()==listaAlbums)
 	    	{
 	    		albumElegido = (String)listaAlbums.getSelectedValue();
-	    		tfAlbum.setText(albumElegido);
-	    		System.out.println(albumElegido);
+	    		vectorSongs = audiotunesad.obtenerSongs(albumElegido);
+				listaSongs = new JList(vectorSongs);
+				listaSongs.addListSelectionListener(this);
+				panelSongs.setVisible(false);
+				panelSongs.removeAll();
+				panelSongs.add(listaSongs);
+				panelSongs.setVisible(true);
 	    	}
 	    	if(lse.getSource()==listaSongs)
 	    	{
