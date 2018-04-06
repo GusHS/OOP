@@ -15,7 +15,6 @@ public class AudioTunesADVL {
             //1. Abrir el archivo
             archivoIn = new BufferedReader(new FileReader("Artistas.txt"));
             //2. Leer todos los archivos
-
             vectorArtistas = new Vector();
             while (archivoIn.ready()) {
                 str = archivoIn.readLine();

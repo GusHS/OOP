@@ -12,7 +12,7 @@ public class Proyecto extends JFrame implements ActionListener{
     private JMenuBar        mbPrincipal;
     private JMenu           menuOpciones, menuCalculos, menuGrados, menuAudio;
     private JMenuItem       miGradosCF, miGradosFC, miExponencial, miFactorial;
-    private JMenuItem       miAudioWAV, miAudioFX, miAudioZoom; 
+    private JMenuItem       miAudioWAV, miAudioFX, miAudioZoom, miAudioTunes; 
     private JMenuItem       miEcuacion, miSalir;
     private JPanel          panel;
     private FactorialGUI2   factorial;
@@ -23,6 +23,7 @@ public class Proyecto extends JFrame implements ActionListener{
     private AudioWAVGUI     audioWAV;
     private AudioFXGUI      audioFX;
     private AudioZoomGUI    audioZoom;
+    private AudioTunesGUIVL audioTunes;
 
 
     public Proyecto() throws Exception{
@@ -39,6 +40,7 @@ public class Proyecto extends JFrame implements ActionListener{
         miAudioWAV      = new JMenuItem("Audio WAV");
         miAudioFX       = new JMenuItem("Audio FX");
         miAudioZoom     = new JMenuItem("Audio Zoom");
+        miAudioTunes    = new JMenuItem("Audio Tunes");
         miEcuacion      = new JMenuItem("Ecuacion");
         miSalir         = new JMenuItem("Salir");
         panel           = new JPanel();
@@ -50,6 +52,7 @@ public class Proyecto extends JFrame implements ActionListener{
         audioWAV        = new AudioWAVGUI();
         audioFX         = new AudioFXGUI();
         audioZoom       = new AudioZoomGUI();
+        audioTunes      = new AudioTunesGUIVL();
        
 
         miGradosCF.addActionListener(this);
@@ -61,6 +64,7 @@ public class Proyecto extends JFrame implements ActionListener{
         miSalir.addActionListener(this);
         miAudioFX.addActionListener(this);
         miAudioZoom.addActionListener(this);
+        miAudioTunes.addActionListener(this);
         
         menuGrados.add(miGradosCF);
         menuGrados.add(miGradosFC);
@@ -72,12 +76,13 @@ public class Proyecto extends JFrame implements ActionListener{
         menuAudio.add(miAudioWAV);
         menuAudio.add(miAudioFX);
         menuAudio.add(miAudioZoom);
+        menuAudio.add(miAudioTunes);
         menuOpciones.add(miSalir);
         mbPrincipal.add(menuOpciones);
         mbPrincipal.add(menuAudio);
         setJMenuBar(mbPrincipal);
         add(panel);
-        setSize(600,400);
+        setSize(800,400);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
@@ -121,6 +126,12 @@ public class Proyecto extends JFrame implements ActionListener{
         if (e.getSource() == miAudioZoom) {
             panel.setVisible(false);
             panel = audioZoom.getPanel2();
+            panel.setVisible(true);
+            add(panel);
+        }
+        if (e.getSource() == miAudioTunes) {
+            panel.setVisible(false);
+            panel = audioTunes.getPanel2();
             panel.setVisible(true);
             add(panel);
         }
