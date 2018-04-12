@@ -11,13 +11,12 @@ public class AudioTunesGUIVL extends JFrame implements ActionListener, ListSelec
 	private JPanel panelUsuario, panelArtistas, panelAlbums, panelSongs, panelAudio, panelPrincipal;
 	String song, respuesta;
 	private JLabel lbSong;
-	private File songFile;
-	private JButton bCatalogo, bArtista, bAlbums, bSongs;
+	private JButton bCatalogo,bAlbums, bSongs;
 	private JButton bPlay, bStop;
 	private JTextField tfArtista, tfAlbum, tfSong;
 	private JTextArea taArtistas, taAlbums, taSongs;
 	private AudioTunesADVL audiotunesad = new AudioTunesADVL();
-	private Vector vectorArtistas, vectorAlbums, vectorSongs;
+	private Vector vectorArtistas, vectorSongs;
 	private JList listaArtistas, listaAlbums, listaSongs;
 	private AudioWAVOS audioWAVOS;
 	private AudioFXOS audioPlayer;
@@ -99,7 +98,7 @@ public class AudioTunesGUIVL extends JFrame implements ActionListener, ListSelec
 	}
 	public void actionPerformed(ActionEvent e)
 	{
-		String artistas, artista, albums, albumes, songs;
+		String artista, albumes;
 		if (e.getSource()==bCatalogo)
 		{
 			//1.- Obtener los artistas del archivo
@@ -234,6 +233,6 @@ public class AudioTunesGUIVL extends JFrame implements ActionListener, ListSelec
     }
 	public static void main(String args[])
 	{
-		AudioTunesGUIVL aud = new AudioTunesGUIVL();
+		new AudioTunesGUIVL();
 	}
 }
