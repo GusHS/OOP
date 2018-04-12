@@ -120,9 +120,10 @@ public class AudioTunesGUIVL extends JFrame implements ActionListener, ListSelec
 			//1.- Leer el artista de tfArtista
 			artista=tfArtista.getText();
 			//2. Obtener los albums del artista
-			vectorAlbums = audiotunesad.obtenerAlbums(artista);
+			//vectorAlbums = audiotunesad.obtenerAlbums(artista);
+			imagenesAlbums = audiotunesad.getImagenesAlbums(artista);
 			//2. Crear un JList del vector artistas
-			listaAlbums = new JList(vectorAlbums);
+			listaAlbums = new JList(imagenesAlbums);
 			listaAlbums.addListSelectionListener(this);
 			//3. Desplegar JList en el panel Artistas
 			panelAlbums.setVisible(false);
@@ -199,6 +200,7 @@ public class AudioTunesGUIVL extends JFrame implements ActionListener, ListSelec
 	    		artistaElegido = (String)listaArtistas.getSelectedValue();
 				//vectorAlbums = audiotunesad.obtenerAlbums(artistaElegido);
 				imagenesAlbums = audiotunesad.getImagenesAlbums(artistaElegido);
+				tfArtista.setText(artistaElegido);
 				listaAlbums = new JList(imagenesAlbums);
 				listaAlbums.addListSelectionListener(this);
 				panelAlbums.setVisible(false);
@@ -211,6 +213,7 @@ public class AudioTunesGUIVL extends JFrame implements ActionListener, ListSelec
 	    	{
 				int albumSelected = listaAlbums.getSelectedIndex();
 				albumElegido = audiotunesad.getAlbum(albumSelected);
+				tfAlbum.setText(albumElegido);
 				System.out.println(albumElegido);
 	    		vectorSongs = audiotunesad.obtenerSongs(albumElegido);
 				listaSongs = new JList(vectorSongs);
