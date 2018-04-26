@@ -189,4 +189,50 @@ public class BibliotecaADImg
 
 		return imagenesLibros;
 	}
+	public String getInfo(int sLibro){
+		return vectorLibros.get(sLibro).toString();
+	}
+	
+	public String getData(String title)
+	{
+		String str, libros="",titulo, autor, edit, datos="";
+		StringTokenizer st;
+		Boolean hasContent = false;
+		try
+		{
+			//1.Abrir el archivo de datos
+			archivoIn = new BufferedReader(new FileReader("Libros.txt"));
+			System.out.println("DS:"+title);
+			//2.Leer los datos del archivo
+			while(archivoIn.ready())
+			{
+				str=archivoIn.readLine();
+				st = new StringTokenizer(str, "_");
+				titulo = st.nextToken();
+				autor = st.nextToken();
+				edit=st.nextToken();
+				if(title.equals(titulo))
+				{
+					datos=datos+"TITULO: "+titulo;
+					datos=datos+"\nAUTOR: "+autor;
+					datos=datos+"\nEDITORIAL: "+edit+"\n";
+					hasContent = true;
+				}
+				if (hasContent == false) {
+					datos = "ERROR DATA NOT FOUND";				
+				}
+			}
+			//3.Cerrar archivo
+			archivoIn.close();
+		}
+		catch(FileNotFoundException fnfe)
+		{
+			System.out.println("Error: " + fnfe);
+		}
+		catch(IOException ioe)
+		{
+			System.out.println("Error: "+ioe);
+		}
+		return datos;
+	}
 }

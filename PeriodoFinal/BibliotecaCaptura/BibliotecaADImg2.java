@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.io.FileWriter;
@@ -12,8 +13,9 @@ import javax.swing.*;
 public class BibliotecaADImg2{
 	
 	private BufferedReader archivoIn;
-	private PrintWriter archivoOut;
+	private PrintWriter archivoOut, archivoOut2;
 	private Vector vectorEditoriales, vectorLibros;
+
 	
 	private ImageIcon imagenesLibros[];
 		
@@ -147,24 +149,19 @@ public class BibliotecaADImg2{
 	{
 		String str, titulo, autor, editorial, datos="";
 		StringTokenizer st;
-		
-		
 		try
 		{
-			//Abrir el archivo
 			archivoIn = new BufferedReader(new FileReader("Libros.txt"));
-			//Leer los datos de la persona 
-			
 			while(archivoIn.ready())
 			{
 				str = archivoIn.readLine();
-		
-				datos = datos + str +"\n";	
+				st=new StringTokenizer(str, "_");
+				titulo= st.nextToken();
+				autor= st.nextToken();
+				editorial= st.nextToken();
+				datos = datos+"TITULO:"+titulo+"\n"+"AUTOR: "+autor+"\n"+"EDITORIAL: "+editorial+"\n\n";
 			}
-			
-			//Cerra el archivo
-			archivoIn.close();
-			
+			archivoIn.close();	
 		}
 		catch(FileNotFoundException e)
 		{
@@ -242,33 +239,47 @@ public class BibliotecaADImg2{
 	
 	public String capturar(String datos)
 	{
+		int newEditorial= 0;
+		int newEntry= 0;
 		String resultado="",respuesta="";
-		
-		try
-		{
-			//Abrir el archivo Libros.txt para capturar datos
-			 archivoOut = new PrintWriter(new FileWriter("Libros.txt",true));
-			 
-			//Capturar los datos 
-			archivoOut.println(datos);
-			
-			//Cerrar el archivo '
-			archivoOut.close();
-			
-			resultado = "Captura exitosa del libro: " + datos;
-			
-			//Checa si el editorial ya existe en el archivo Editoriales.txt
-			respuesta = capturaEditorial(datos);
-			
-			resultado = resultado + respuesta + "\n";
-		
+		String autor,titulo,editorial,str;
+		StringTokenizer st;
+		//Separacion de Datos.
+		String[] data= datos.split("\\_");
+				//data[0] = titulo.
+				//data[1] = autor.
+				//data[2] = editorial
+		//Comparación de Informacion
+		try {
+			archivoIn = new BufferedReader(new FileReader("Libros.txt"));
+			archivoOut = new PrintWriter(new FileWriter("Libros.txt",true));
+			archivoOut2 = new PrintWriter(new FileWriter("Editoriales.txt",true));
+			while (archivoIn.ready()) {
+				str = archivoIn.readLine();
+				st = new StringTokenizer(str,"_");
+				titulo = st.nextToken();
+				autor = st.nextToken();
+				editorial = st.nextToken();
+					if (data[2].equals(editorial)) {
+						newEditorial++;
+					}
+					if (data[0].equals(titulo)&&data[1].equals(autor)&&data[2].equals(editorial)) {
+						newEntry++;
+					}	
+			}
+			if(newEditorial==0){
+				archivoOut2.println(data[2]);
+			}
+			if(newEntry==0){
+				archivoOut.print(datos+"\n");
+			}
+			archivoIn.close();
+			archivoOut.close();	
+			archivoOut2.close();
 		}
-		catch(IOException ioe)
-		{
-			resultado = "Error en capturar datos....";
-			System.out.println("Error: " + ioe);	
-		}
-		
+		catch (Exception e) {
+			//TODO: handle exception
+		}			
 		//Entregar resultado de la transaccion
 		return resultado;
 	}

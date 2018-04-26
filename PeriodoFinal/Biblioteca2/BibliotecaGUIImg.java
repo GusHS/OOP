@@ -5,8 +5,7 @@ import java.io.File;
 import java.util.Vector;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
-public class BibliotecaGUIImg extends JFrame implements ActionListener, ListSelectionListener
-{
+public class BibliotecaGUIImg extends JFrame implements ActionListener, ListSelectionListener{
 	//Atributos de la aplicacion
 	private JPanel 		panelUsuario, panelEditorial, panelTitulo, panelAutor,panelPrincipal;
 	private JButton 	bEditoriales,bTitulo;
@@ -19,8 +18,7 @@ public class BibliotecaGUIImg extends JFrame implements ActionListener, ListSele
 	private ImageIcon[]	 vectorTituloImg;
 	private BibliotecaADImg bibliotecaAD;
 	
-	public BibliotecaGUIImg()
-	{
+	public BibliotecaGUIImg(){
 		super("Audio Tunes Tec");
 		
 		//1.Crear objetos de los atributos
@@ -103,19 +101,26 @@ public class BibliotecaGUIImg extends JFrame implements ActionListener, ListSele
 	}
 	
     public void valueChanged(ListSelectionEvent lse){
-		if (lse.getSource()== listaEditorial                                                     ) {
+		String libroElegido, info;
+    	if (lse.getSource()== listaEditorial){
 			String sEdit = (String) listaEditorial.getSelectedValue();
 			vectorTituloImg = bibliotecaAD.getCoversByEditorial(sEdit);
 			listaTitulo =  new JList(vectorTituloImg);
+			listaTitulo.addListSelectionListener(this);
 			panelTitulo.setVisible(false);
 			panelTitulo.removeAll();
 			panelTitulo.add(listaTitulo);
 			panelTitulo.setVisible(true);
 		}
-    	
-    }
-	public static void main(String args[])
-	{
+		if (lse.getSource()==listaTitulo) {
+			int sLibro = listaTitulo.getSelectedIndex();
+			libroElegido = bibliotecaAD.getInfo(sLibro);
+			System.out.println(libroElegido);
+			info = bibliotecaAD.getData(libroElegido);
+			taAutor.setText(info);
+		}
+	}
+	public static void main(String args[]){
 		new BibliotecaGUIImg();
 	}
 }

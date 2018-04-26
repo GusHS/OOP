@@ -52,23 +52,23 @@ public class LibroGUI extends JFrame implements ActionListener
         add(panel2);
         setSize(400,400);
         setVisible(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
     private String obtenerDatos()
     {
     	String datos="";
-    	
-    	String titulo = tfTitulo.getText();
-    	String autor = tfAutor.getText();
-    	String editorial = tfEditorial.getText();
-    	
+    	String titulo = tfTitulo.getText().toUpperCase();
+    	String autor = tfAutor.getText().toUpperCase();
+        String editorial = tfEditorial.getText().toUpperCase();
+        
     	if(titulo.equals("") || autor.isEmpty() || editorial.equals(""))
     	{
     		datos = "Vacio";
     	} 
     	else
     	{
-    	datos = titulo+"_"+autor+"_"+editorial;
+    	    datos = titulo+"_"+autor+"_"+editorial;
     	}
     	
     	return datos;
@@ -85,16 +85,17 @@ public class LibroGUI extends JFrame implements ActionListener
             datos = obtenerDatos();
          	if(datos.equals("Vacio"))
          	{
-         		respuesta = "Algun campo esta vacio...";
+                 respuesta = "[ERROR] Un esta vacio";
+                 taDatos.setText(respuesta);
          	}   
          	else
          	{
          		//Capturar los datos
             	respuesta = bibliotecaAD.capturar(datos);
-            
            	 	//Mostrar el resultado de la transaccion
-            	taDatos.setText(respuesta);
-         	}
+            	taDatos.setText("Se ha dado de alta:"+ datos);
+             }
+            // taDatos.setText("Success");
         }
         
         
