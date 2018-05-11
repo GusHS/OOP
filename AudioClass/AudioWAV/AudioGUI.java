@@ -3,6 +3,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
+import javax.swing.JTextArea;
 
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
@@ -16,36 +17,35 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
-public class Audio1 extends JFrame implements ActionListener
-{
-    // Atributos de Audio4
-    private JTextField tfSong;
-    private JButton    bPlay, bStop;
-    private JPanel panel1, panel2;
-    private JLabel lbSong;
+public class AudioGUI extends JFrame implements ActionListener{
     
-    private File songFile;
-    private AudioInputStream audioIn;
-    private Clip clip;
+    private JTextField  tfSong;
+    private JTextArea    taDatos;
+    private JButton     bPlay, bStop,bCatalog;
+    private JPanel      panel1, panel2;
+    private JLabel      lbSong;
+    private AudioOS     audioOS;
     
-    public Audio1()
-    {
+    public AudioGUI(){
         super("Audio Reproductor de WAV");
-        
         // 1. Crear los objetos de los atributos
-        tfSong = new JTextField();
-        bPlay  = new JButton("Play");
-        bStop  = new JButton("Stop");
-        lbSong = new JLabel("Now Playing: ");
-        panel1 = new JPanel();
-        panel2 = new JPanel();
+        tfSong  = new JTextField();
+        taDatos = new JTextArea("Now Playing: ",20, 20);
+        bPlay   = new JButton("Play");
+        bStop   = new JButton("Stop");
+        bCatalog= new JButton("Catalog");
+        lbSong  = new JLabel("Now Playing: ");
+        panel1  = new JPanel();
+        panel2  = new JPanel();
+        audioOS = new AudioOS();
         
         // Adicionar a los JButtons addActionListener
         bPlay.addActionListener(this);
         bStop.addActionListener(this);
+        bCatalog.addActionListener(this);
         
         // 2. Definir los Layouts para los JPanels
-        panel1.setLayout(new GridLayout(2,2));
+        panel1.setLayout(new GridLayout(3,2));
         panel2.setLayout(new FlowLayout());
         
         // 3. Adicionar los objetos a los JPanels correspondientes
@@ -53,12 +53,13 @@ public class Audio1 extends JFrame implements ActionListener
         panel1.add(tfSong);
         panel1.add(bPlay);
         panel1.add(bStop);
+        panel1.add(bCatalog);
         
         panel2.add(panel1);
-        panel2.add(lbSong);
+        panel2.add(taDatos);
         
         
-        // 4. Adicionar panel3 al JFrame y hacerlo visible
+        // 4. Adicionar panel2 al JFrame y hacerlo visible
         add(panel2);
         setSize(350,250);
         setVisible(true);
@@ -66,56 +67,24 @@ public class Audio1 extends JFrame implements ActionListener
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
     
-    public String reproducir(String song) //throws Exception
-    {
-        String respuesta="";
-        
-        try
-        {
-            // 1. Especificar el nobre de la cancion a reproducir
-            //song = new File("Lazarus.wav");
-            songFile = new File("/JesusGG/Music_JGG/music_wav/"+song+".wav");
-            
-            // 2. Preparar los streams de audio
-            audioIn = AudioSystem.getAudioInputStream(songFile);
-            
-            // 3. Preparar el AudioStream (audioIn) y reproducirlo
-            clip = AudioSystem.getClip();
-            clip.open(audioIn);
-            clip.start();
-            
-            respuesta = "Now Playing: "+song;
-        }
-        catch(Exception e)
-        {
-            respuesta = "Now Playing: Error NO SONG";
-            System.out.println("Error: "+e);
+    public void actionPerformed(ActionEvent e){
+        String song;
+        if(e.getSource() == bPlay){
+            try {
+                song = tfSong.getText();
+                audioOS.reproducir(song);
+                taDatos.setText("Now Playing: "+song); 
+            } catch (Exception ex) {
+                System.out.println("Exception: "+ex);
+            }
         }
         
-        return respuesta;
-    }
-    
-    public void actionPerformed(ActionEvent e) //throws Exception
-    {
-        String song, respuesta;
-        
-        if(e.getSource() == bPlay)
-        {
-            song = tfSong.getText();
-            
-            respuesta = reproducir(song);
-            
-            lbSong.setText(respuesta);
-        }
-        
-        if(e.getSource() == bStop)
-        {
-            clip.stop();
+        if(e.getSource() == bStop){
+            audioOS.stop();
         }
     }
     
-    public static void main(String args[]) //throws Exception
-    {
-        new Audio1();
+    public static void main(String args[]){
+        new AudioGUI();
     }
 }
